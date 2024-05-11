@@ -6,7 +6,7 @@ import * as THREE from 'three'
 // @ts-ignore
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
-const Buffer: NextPage = () => {
+const Human: NextPage = () => {
   let canvas: HTMLElement
 
   useEffect(() => {
@@ -75,4 +75,4 @@ const Buffer: NextPage = () => {
   )
 }
 
-export default Buffer
+export default Human
