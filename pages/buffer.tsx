@@ -22,13 +22,16 @@ const Buffer: NextPage = () => {
     renderer.setPixelRatio(window.devicePixelRatio)
 
     const loader = new OBJLoader();
+    let obj;
+
     loader.load(
       'FinalBaseMesh.obj', // モデルファイルへのパス
       // モデルが読み込まれたときの処理
-      (obj) => {
-        obj.scale.set(0.5, 0.5, 0.5); // 元々のモデルサイズを維持？
+      (loadedObj) => {
+        loadedObj.scale.set(0.5, 0.5, 0.5); // 元々のモデルサイズを維持？
         // obj.rotation.y = Math.PI / 2;
-        scene.add(obj);
+        scene.add(loadedObj);
+        obj = loadedObj;
       },
       (progress) => {
         // モデルの読み込み進行状況を表示（オプション）
@@ -40,16 +43,20 @@ const Buffer: NextPage = () => {
       }
     );
 
-    scene.add(new THREE.AmbientLight(0xffffff));
-
-    // アニメーション
-    const clock = new THREE.Clock()
-    const tick = () => {
-      renderer.render(scene, camera)
-      requestAnimationFrame(tick)
+    const animate = () => {
+      requestAnimationFrame(animate);
+    
+      // モデルをY軸を中心に回転させる
+      if (obj) { // モデルがロードされていることを確認
+        obj.rotation.y += 0.01;
+      }
+    
+      // シーンとカメラをレンダリング
+      renderer.render(scene, camera);
     }
-    tick()
+    animate();
 
+    scene.add(new THREE.AmbientLight(0xffffff));
 
     window.addEventListener('resize', () => {
       sizes.width = window.innerWidth
