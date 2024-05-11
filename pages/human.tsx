@@ -16,9 +16,8 @@ const Human: NextPage = () => {
     const scene = new THREE.Scene()
 
     // 見えかたを決めるカメラ
-    const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.1, 1000)
+    const camera = new THREE.PerspectiveCamera(80, innerWidth / innerHeight, 0.1, 1000)
     camera.position.set(0, 5, 10);
-
 
     // レンダラー
     // 基本この設定でいいはず
@@ -34,7 +33,7 @@ const Human: NextPage = () => {
       'FinalBaseMesh.obj', // モデルファイルへのパス
       // モデルが読み込まれたときの処理
       (loadedObj: THREE.Object3D) => {
-        loadedObj.scale.set(0.5, 0.5, 0.5); // 元々のモデルサイズを維持？
+        loadedObj.scale.set(0.3, 0.3, 0.3); // 元々のモデルサイズを維持？
         scene.add(loadedObj);
         obj = loadedObj;
       }
