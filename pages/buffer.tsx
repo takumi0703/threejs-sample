@@ -2,6 +2,8 @@
 import { useEffect } from 'react'
 import { NextPage } from 'next'
 import * as THREE from 'three'
+// OBJLoader に対する型定義は、自前で定義するのは難しいため、型チェックを無効化
+// @ts-ignore
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 const Buffer: NextPage = () => {
@@ -11,59 +13,57 @@ const Buffer: NextPage = () => {
     if(canvas) return
 
     canvas = document.getElementById('canvas')!
-
     const scene = new THREE.Scene()
-    const sizes = {width: innerWidth, height: innerHeight}
-    const camera = new THREE.PerspectiveCamera(70, sizes.width / sizes.height, 0.1, 1000)
 
-    camera.position.set(0, 0, 20);
-    const renderer = new THREE.WebGLRenderer({canvas: canvas || undefined, antialias: true, alpha: true})
-    renderer.setSize(sizes.width, sizes.height)
+    // 見えかたを決めるカメラ
+    const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.1, 1000)
+    camera.position.set(0, 5, 10);
+
+
+    // レンダラー
+    // 基本この設定でいいはず
+    // https://threejs.org/docs/#api/en/renderers/WebGLRenderer
+    const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true})
+    renderer.setSize(innerWidth, innerHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
 
+    // objファイルの読み込み
     const loader = new OBJLoader();
-    let obj;
-
+    let obj: THREE.Object3D; // モデルを格納する変数
     loader.load(
       'FinalBaseMesh.obj', // モデルファイルへのパス
       // モデルが読み込まれたときの処理
-      (loadedObj) => {
+      (loadedObj: THREE.Object3D) => {
         loadedObj.scale.set(0.5, 0.5, 0.5); // 元々のモデルサイズを維持？
-        // obj.rotation.y = Math.PI / 2;
         scene.add(loadedObj);
         obj = loadedObj;
-      },
-      (progress) => {
-        // モデルの読み込み進行状況を表示（オプション）
-        console.log('Loading model: ' + (progress.loaded / progress.total * 100) + '% loaded');
-      },
-      (error) => {
-        // エラー処理
-        console.error('An error happened', error);
       }
     );
 
+    // モデルに動きをつける
     const animate = () => {
+      // この関数により、ブラウザの描画タイミングに合わせてアニメーションが行われる
       requestAnimationFrame(animate);
-    
+
       // モデルをY軸を中心に回転させる
-      if (obj) { // モデルがロードされていることを確認
-        obj.rotation.y += 0.01;
-      }
+      if (obj) { obj.rotation.y += 0.02;}
     
       // シーンとカメラをレンダリング
       renderer.render(scene, camera);
     }
     animate();
 
-    scene.add(new THREE.AmbientLight(0xffffff));
+    // 画面全体がこのライトの影響を受ける
+    scene.add(new THREE.AmbientLight(0x555555));
+    // 他にもSpotLightなどがあり、特定の位置から特定の方向に向かって光を当てることができる
 
+    // リサイズ時の処理
     window.addEventListener('resize', () => {
-      sizes.width = window.innerWidth
-      sizes.height = window.innerHeight
-      camera.aspect = sizes.width / sizes.height
+      innerWidth = window.innerWidth
+      innerHeight = window.innerHeight
+      camera.aspect = innerWidth / innerHeight
       camera.updateProjectionMatrix()
-      renderer.setSize(sizes.width, sizes.height)
+      renderer.setSize(innerWidth, innerHeight)
       renderer.setPixelRatio(window.devicePixelRatio)
     })
   }, [])
