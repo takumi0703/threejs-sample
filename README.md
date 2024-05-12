@@ -9,6 +9,8 @@ https://qiita.com/watabo_shi/items/bf9bcd4569b6d480c608
 
 https://ics.media/entry/14771/
 
+ロードマップ? https://qiita.com/nemutas/items/d2d738749184a7a42f1d#%E6%AC%A1%E3%81%AE%E3%82%B9%E3%83%86%E3%83%83%E3%83%97
+
 
 3Dオブジェクトを動かしてみる。 pages/human.tsx
 
