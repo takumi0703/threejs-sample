@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import { NextPage } from 'next'
 import * as THREE from 'three'
 // @ts-ignore
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// @ts-ignore
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 const Human: NextPage = () => {
@@ -22,6 +24,10 @@ const Human: NextPage = () => {
     const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true})
     renderer.setSize(innerWidth, innerHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
+
+    // ユーザによってカメラを操作できるようにする
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.target.set(0, 0, 0);
 
     const loader = new GLTFLoader();
     let mixer: THREE.AnimationMixer;
@@ -61,9 +67,8 @@ const Human: NextPage = () => {
     animate();
 
     // 素材の色で表示されるように
-    const light = new THREE.DirectionalLight(0xffffff, 0.5);
-    light.position.set(1, 1, 1);
-    scene.add(light);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
 
     // リサイズ時の処理
     window.addEventListener('resize', () => {
