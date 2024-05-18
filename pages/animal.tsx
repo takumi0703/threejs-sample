@@ -67,7 +67,7 @@ const Human: NextPage = () => {
     animate();
 
     // 素材の色で表示されるように
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     scene.add(ambientLight);
 
     // リサイズ時の処理
