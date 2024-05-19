@@ -1,3 +1,4 @@
+// 自分で作成した3Dモデルを表示するサンプル
 
 import { useEffect } from 'react'
 import { NextPage } from 'next'

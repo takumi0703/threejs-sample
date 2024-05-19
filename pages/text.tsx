@@ -1,3 +1,5 @@
+// テキストを立体的に表示する
+
 import { useEffect } from 'react'
 import { NextPage } from 'next'
 import * as THREE from 'three'

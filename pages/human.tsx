@@ -1,3 +1,4 @@
+// Three.js サンプル
 
 import { useEffect } from 'react'
 import { NextPage } from 'next'
